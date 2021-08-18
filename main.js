@@ -185,6 +185,6 @@ app.post('/get-cert', (req, res) => {
 
 
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Example app listening at http://localhost:${this.address().port}`)
   })
