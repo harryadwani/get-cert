@@ -111,8 +111,8 @@ async function write(){
           port: 587,
           secure: false, // true for 465, false for other ports
           auth: {
-              user: 'harryadwani9@gmail.com',
-              pass: 'DL@9375hh'
+              user: process.env.email,
+              pass: process.env.password
           }
       });
             loadImage('Slide1.jpg').then(async(image) => {
