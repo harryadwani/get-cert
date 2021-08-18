@@ -1,13 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
-
+require('dotenv').config()
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-const port = 3000
+const port = 5000
   
 const { createCanvas, loadImage, rsvgVersion } = require('canvas')
 const canvas = createCanvas(794, 1123)
@@ -185,6 +185,6 @@ app.post('/get-cert', (req, res) => {
 
 
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Example app listening at http://localhost:${this.address().port}`)
+app.listen(process.env.PORT || port, () => {
+    console.log(`Example app listening`)
   })
