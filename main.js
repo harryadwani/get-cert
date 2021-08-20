@@ -23,18 +23,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const port = 5000
   
 const { createCanvas, loadImage, rsvgVersion } = require('canvas')
-const canvas = createCanvas(794, 1123)
-const ctx = canvas.getContext('2d')
+// const canvas = createCanvas(794, 1123)
+// const ctx = canvas.getContext('2d')
 
-ctx.font = '20px Impact'
+// ctx.font = '20px Impact'
 
 
-var text = ctx.measureText('123')
-ctx.strokeStyle = 'rgba(0,0,0,0.5)'
-ctx.beginPath()
-ctx.lineTo(50, 102)
-ctx.lineTo(50 + text.width, 102)
-ctx.stroke()
+// var text = ctx.measureText('123')
+// ctx.strokeStyle = 'rgba(0,0,0,0.5)'
+// ctx.beginPath()
+// ctx.lineTo(50, 102)
+// ctx.lineTo(50 + text.width, 102)
+// ctx.stroke()
 var names=[],transporter,testAccount
 
 var busy=0,count=0;
@@ -44,6 +44,18 @@ function delay(i,image) {
   return new Promise((resolve,reject)=>{       
       setTimeout(async function() {   
         //load image to canvas and write to canvas
+        canvas = createCanvas(794, 1123)
+        ctx = canvas.getContext('2d')
+
+        ctx.font = '20px Impact'
+
+
+        var text = ctx.measureText('123')
+        ctx.strokeStyle = 'rgba(0,0,0,0.5)'
+        ctx.beginPath()
+        ctx.lineTo(50, 102)
+        ctx.lineTo(50 + text.width, 102)
+        ctx.stroke()
         ctx.drawImage(image, 0, 0, 794, 1123)
         ctx.fillText('123', 380, 430)
         ctx.font = '40px Impact'
