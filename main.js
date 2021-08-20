@@ -99,13 +99,13 @@ async function removeFiles(i){
 
       const  pathToFile = __dirname + `/test${i}.png`
 
-      fs.unlink(pathToFile, function(err) {
-        if (err) {
-          throw err
-        } else {
-          console.log("Successfully deleted the file.")
-        }
-      })
+      // fs.unlink(pathToFile, function(err) {
+      //   if (err) {
+      //     throw err
+      //   } else {
+      //     console.log("Successfully deleted the file.")
+      //   }
+      // })
       
       resolve();
     }, 2000)
