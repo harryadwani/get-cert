@@ -1,15 +1,13 @@
 {
-  "name":"John",
-  "age":30,
-  "cars": {
-    "car1":"Ford",
-    "car2":"BMW",
-    "car3":"Fiat"
-  }
- }
+  "p1":{
+   "name":"harsh",
+   "email":"ha@kf.com"
+   }
+}
+
 
 {
- "p1":{
+  "p1":{
    "name":"harsh",
    "email":"ha@kf.com"
    },

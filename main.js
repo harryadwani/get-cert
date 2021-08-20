@@ -3,6 +3,19 @@ const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
 require('dotenv').config()
 
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
+const oauth2Client = new OAuth2(
+  "1028639473281-sghkilr7ib1qjnu2qd1e4r7n6o217udi.apps.googleusercontent.com",
+  "431ZAWCep-vcYAPh1uJ3a-dA", // Client Secret
+  "https://developers.google.com/oauthplayground" // Redirect URL
+);
+oauth2Client.setCredentials({
+  refresh_token: "1//04oirsU4pQGFXCgYIARAAGAQSNwF-L9Iri7gWHMZyfg5s7bnAcxkhAXmihiUuiMf7Ruob2OTdy6_2heAkTPr8Me1Ss1sgbYlNjsE"
+});
+const accessToken = oauth2Client.getAccessToken()
+
+
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -108,11 +121,20 @@ async function write(){
   
           transporter = nodemailer.createTransport( {
           service: 'gmail',
-          port: 587,
-          secure: false, // true for 465, false for other ports
+          // port: 587,
+          // secure: false, // true for 465, false for other ports
           auth: {
-              user: process.env.email,
-              pass: process.env.password
+              // user: 'harryadwani9@gmail.com',//process.env.EMAIL,
+              // pass: 'DL@9375hh'//process.env.password
+              type: "OAuth2",
+              user: "harryadwani9@gmail.com", 
+              clientId: "1028639473281-sghkilr7ib1qjnu2qd1e4r7n6o217udi.apps.googleusercontent.com",              
+              clientSecret: "431ZAWCep-vcYAPh1uJ3a-dA",
+              refreshToken: "1//04oirsU4pQGFXCgYIARAAGAQSNwF-L9Iri7gWHMZyfg5s7bnAcxkhAXmihiUuiMf7Ruob2OTdy6_2heAkTPr8Me1Ss1sgbYlNjsE",
+              accessToken: accessToken
+          },
+          tls: {
+            rejectUnauthorized: false
           }
       });
             loadImage('Slide1.jpg').then(async(image) => {
@@ -176,7 +198,7 @@ app.post('/get-cert', (req, res) => {
         }
       }
       catch(e){
-          // console.log(e)
+          console.log(e)
           busy=0
           res.send('Wrong syntax')
       }
