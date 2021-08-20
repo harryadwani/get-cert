@@ -1,7 +1,7 @@
 {
   "p1":{
    "name":"harsh",
-   "email":"ha@kf.com"
+   "email":"nachaparty@gmail.com"
    }
 }
 

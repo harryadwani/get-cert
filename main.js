@@ -75,12 +75,12 @@ async function sendMail(i){
         // send mail with defined transport object
         let info = await transporter.sendMail({
         from: "harryadwani99@gmail.com", // sender address
-        //to: emails[i], // list of receivers
-        to:"nachapart@gmail.com",
-        subject: `Your event certificate is here! ${i} ✔`, // Subject line
+        to: emails[i], // list of receivers
+        // to:"nachaparty@gmail.com",
+        subject: `Your event certificate is here ${names[i]} !  ✔`, // Subject line
         attachments: attachment,
         text: "Thank You for attending the webinar", // plain text body
-        html: "<b>Hope to learn and grow together again soon.</b>", // html body
+        html: "<b> We hope you had a great learning experience with us.<br> Thank You for attending the webinar.</b>", // html body
       });
 
       console.log("Message sent: %s", info.messageId);
@@ -124,8 +124,8 @@ async function write(){
           // port: 587,
           // secure: false, // true for 465, false for other ports
           auth: {
-              // user: 'harryadwani9@gmail.com',//process.env.EMAIL,
-              // pass: 'DL@9375hh'//process.env.password
+              // user: '',//process.env.EMAIL,
+              // pass: ''//process.env.password
               type: "OAuth2",
               user: "harryadwani9@gmail.com", 
               clientId: "1028639473281-sghkilr7ib1qjnu2qd1e4r7n6o217udi.apps.googleusercontent.com",              
@@ -156,7 +156,7 @@ async function write(){
 app.get('/', (req, res) => {
    
     //res.sendFile(__dirname + '/test.png');
-    res.send("Thank You for Using the service. Certificates would be delivered to the E-Mail ids shortly ")
+    res.send("Please send a Post Request instead. Thank You for Using the service.")
 })
 
 
