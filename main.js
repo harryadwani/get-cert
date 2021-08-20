@@ -47,7 +47,7 @@ function delay(i,image) {
         var canvas = createCanvas(794, 1123)
         var ctx = canvas.getContext('2d')
 
-        // ctx.font = '20px'
+        ctx.font = '20px Sans'
 
 
         var text = ctx.measureText('123')
@@ -58,11 +58,11 @@ function delay(i,image) {
         ctx.stroke()
         ctx.drawImage(image, 0, 0, 794, 1123)
         ctx.fillText('123', 380, 430)
-        // ctx.font = '40px'
+        ctx.font = '40px Sans'
         var newname = names[i]
         console.log(newname+' '+i)
         ctx.fillText(newname,180,550)
-        // ctx.font = '20px'
+        ctx.font = '20px Sans'
         ctx.fillText('Cyber Security', 80, 660)
         var d= new Date();
         ctx.fillText(d.toISOString().slice(0,10), 80, 730)
@@ -112,13 +112,13 @@ async function removeFiles(i){
 
       const  pathToFile = __dirname + `/test${i}.png`
 
-      // fs.unlink(pathToFile, function(err) {
-      //   if (err) {
-      //     throw err
-      //   } else {
-      //     console.log("Successfully deleted the file.")
-      //   }
-      // })
+      fs.unlink(pathToFile, function(err) {
+        if (err) {
+          throw err
+        } else {
+          console.log("Successfully deleted the file.")
+        }
+      })
       
       resolve();
     }, 2000)
