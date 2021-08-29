@@ -191,7 +191,7 @@ app.post('/get-cert', (req, res) => {
               for (var key in f) {
                 if (f.hasOwnProperty(key)) {
                     //console.log(key + " -> " + f[key].name);
-                    names[k]=f[key].name
+                    names[k]=f[key].username
                     emails[k]=f[key].email
                     k++
                 }
