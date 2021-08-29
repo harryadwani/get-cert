@@ -6,13 +6,13 @@ require('dotenv').config()
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
-  "1028639473281-sghkilr7ib1qjnu2qd1e4r7n6o217udi.apps.googleusercontent.com",
-  "uL2Bs_UcFIXmi-DnACJ_AI3y", // Client Secret
+  "1028639473281-lvmuea9bclf1t59ks6ulg35uumeeihpb.apps.googleusercontent.com",
+  "Db3oFjDlLnxFvte2l-h_BMNq", // Client Secret
   "https://developers.google.com/oauthplayground" // Redirect URL
   
 );
 oauth2Client.setCredentials({
-  refresh_token: "1//04Er8fMJA5R0NCgYIARAAGAQSNwF-L9Ir4FL970kksB3YirfNP-jrHTzYDc7rG6zzult8Coqyjf_Im3GRItZoxvrC5oEahWe0H7Q"
+  refresh_token: "1//04mGrT8zznd2kCgYIARAAGAQSNwF-L9IrZiB6kSn29SKcH8A-s3JGi-2qdnLFAzigecViQTUPN451gFpHVoS0uL6oz6icO8NF6UY"
 });
 const accessToken = oauth2Client.getAccessToken()
 
@@ -141,10 +141,10 @@ async function write(){
               // user: '',//process.env.EMAIL,
               // pass: ''//process.env.password
               type: "OAuth2",
-              user: "harryadwani9@gmail.com", 
-              clientId: "1028639473281-sghkilr7ib1qjnu2qd1e4r7n6o217udi.apps.googleusercontent.com",              
-              clientSecret: "431ZAWCep-vcYAPh1uJ3a-dA",
-              refreshToken: "1//04oirsU4pQGFXCgYIARAAGAQSNwF-L9Iri7gWHMZyfg5s7bnAcxkhAXmihiUuiMf7Ruob2OTdy6_2heAkTPr8Me1Ss1sgbYlNjsE",
+              user: "nachaparty@gmail.com", 
+              clientId: "1028639473281-lvmuea9bclf1t59ks6ulg35uumeeihpb.apps.googleusercontent.com",              
+              clientSecret: "Db3oFjDlLnxFvte2l-h_BMNq",
+              refreshToken: "1//04mGrT8zznd2kCgYIARAAGAQSNwF-L9IrZiB6kSn29SKcH8A-s3JGi-2qdnLFAzigecViQTUPN451gFpHVoS0uL6oz6icO8NF6UY",
               accessToken: accessToken
           },
           tls: {
