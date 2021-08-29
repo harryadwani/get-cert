@@ -7,11 +7,12 @@ const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
   "1028639473281-sghkilr7ib1qjnu2qd1e4r7n6o217udi.apps.googleusercontent.com",
-  "431ZAWCep-vcYAPh1uJ3a-dA", // Client Secret
+  "uL2Bs_UcFIXmi-DnACJ_AI3y", // Client Secret
   "https://developers.google.com/oauthplayground" // Redirect URL
+  
 );
 oauth2Client.setCredentials({
-  refresh_token: "1//04oirsU4pQGFXCgYIARAAGAQSNwF-L9Iri7gWHMZyfg5s7bnAcxkhAXmihiUuiMf7Ruob2OTdy6_2heAkTPr8Me1Ss1sgbYlNjsE"
+  refresh_token: "1//04Er8fMJA5R0NCgYIARAAGAQSNwF-L9Ir4FL970kksB3YirfNP-jrHTzYDc7rG6zzult8Coqyjf_Im3GRItZoxvrC5oEahWe0H7Q"
 });
 const accessToken = oauth2Client.getAccessToken()
 
