@@ -3,16 +3,21 @@ const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
 require('dotenv').config()
 
+
+const id = '1028639473281-qko262tv42jaaogvmcis13s43hcangf4.apps.googleusercontent.com';
+const secret = '8FmUhuRJcjvFu56MCEaIyBRO';
+const rtoken = '1//04Fw6ROK7OW7MCgYIARAAGAQSNwF-L9Ir--nzn1V1SyQhxS1sdn-ssXFlJObZHoEDr4_hY-ZfJ6HkFEnhdtDk0w-T_Pg4gcWcC2M';
+
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
-  "1028639473281-lvmuea9bclf1t59ks6ulg35uumeeihpb.apps.googleusercontent.com",
-  "Db3oFjDlLnxFvte2l-h_BMNq", // Client Secret
+  id,
+  secret, // Client Secret
   "https://developers.google.com/oauthplayground" // Redirect URL
   
 );
 oauth2Client.setCredentials({
-  refresh_token: "1//04mGrT8zznd2kCgYIARAAGAQSNwF-L9IrZiB6kSn29SKcH8A-s3JGi-2qdnLFAzigecViQTUPN451gFpHVoS0uL6oz6icO8NF6UY"
+  refresh_token: rtoken
 });
 const accessToken = oauth2Client.getAccessToken()
 
@@ -45,6 +50,7 @@ function delay(i,image) {
   return new Promise((resolve,reject)=>{       
       setTimeout(async function() {   
         //load image to canvas and write to canvas
+        try{
         var canvas = createCanvas(794, 1123)
         var ctx = canvas.getContext('2d')
 
@@ -73,14 +79,15 @@ function delay(i,image) {
         const stream = canvas.createPNGStream()
         stream.pipe(out)
         out.on('finish', () =>  console.log('The file was created.'))
-        resolve();
+        resolve();}catch(e){console.log(e)}
       }, 2000)
     });
 }
 
 async function sendMail(i){
   return new Promise(async(resolve,reject)=>{
-    setTimeout(async function() {  
+    setTimeout(async function() {
+      try{  
       var img = require("fs").readFileSync(__dirname + `/test${i}.png`);
       var attachment = [{
         'filename': `test${i}.png`,
@@ -88,7 +95,7 @@ async function sendMail(i){
         }]
         // send mail with defined transport object
         let info = await transporter.sendMail({
-        from: "harryadwani99@gmail.com", // sender address
+        from: "aseem.abhyast@gmail.com", // sender address
         to: emails[i], // list of receivers
         // to:"nachaparty@gmail.com",
         subject: `Your event certificate is here ${names[i]} !  ✔`, // Subject line
@@ -99,7 +106,7 @@ async function sendMail(i){
 
       console.log("Message sent: %s", info.messageId);
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-      resolve();
+      resolve();}catch(e){console.log(e)}
     }, 2000)
     });
 }
@@ -108,6 +115,7 @@ async function sendMail(i){
 async function removeFiles(i){
   return new Promise(async(resolve,reject)=>{
     setTimeout(async function() {  
+      try{
       // var img = require("fs").readFileSync(__dirname + `/test${i}.png`);
       const fs = require("fs")
 
@@ -121,7 +129,7 @@ async function removeFiles(i){
         }
       })
       
-      resolve();
+      resolve();}catch(e){console.log(e)}
     }, 2000)
     });
 }
@@ -132,7 +140,7 @@ async function write(){
 
   return new Promise(async(resolve,reject)=>{
     setTimeout(async function() { 
-  
+          try{
           transporter = nodemailer.createTransport( {
           service: 'gmail',
           // port: 587,
@@ -141,10 +149,10 @@ async function write(){
               // user: '',//process.env.EMAIL,
               // pass: ''//process.env.password
               type: "OAuth2",
-              user: "nachaparty@gmail.com", 
-              clientId: "1028639473281-lvmuea9bclf1t59ks6ulg35uumeeihpb.apps.googleusercontent.com",              
-              clientSecret: "Db3oFjDlLnxFvte2l-h_BMNq",
-              refreshToken: "1//04mGrT8zznd2kCgYIARAAGAQSNwF-L9IrZiB6kSn29SKcH8A-s3JGi-2qdnLFAzigecViQTUPN451gFpHVoS0uL6oz6icO8NF6UY",
+              user: "aseem.abhyast@gmail.com", 
+              clientId: id,              
+              clientSecret: secret,
+              refreshToken: rtoken,
               accessToken: accessToken
           },
           tls: {
@@ -161,7 +169,7 @@ async function write(){
                 }
               }  })
               
-    resolve();
+    resolve();}catch(e){console.log(e)}
   }, 0)
   });          
 }
@@ -191,7 +199,7 @@ app.post('/get-cert', (req, res) => {
               //console.log(f.p1.name)
               for (var key in f) {
                 if (f.hasOwnProperty(key)) {
-                    //console.log(key + " -> " + f[key].name);
+                    console.log(key + " -> " + f[key].username);
                     names[k]=f[key].username
                     emails[k]=f[key].email
                     k++
