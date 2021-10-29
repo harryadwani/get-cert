@@ -41,12 +41,12 @@ const { createCanvas, loadImage, rsvgVersion } = require('canvas')
 // ctx.lineTo(50, 102)
 // ctx.lineTo(50 + text.width, 102)
 // ctx.stroke()
-var names=[],transporter,testAccount
+var transporter;
+eventName = 'Cyber Security'
+var busy=0;
 
-var busy=0,count=0;
 
-
-function delay(i,image) { 
+function delay(i,image,names,emails) { 
   return new Promise((resolve,reject)=>{       
       setTimeout(async function() {   
         //load image to canvas and write to canvas
@@ -64,13 +64,13 @@ function delay(i,image) {
         ctx.lineTo(50 + text.width, 102)
         ctx.stroke()
         ctx.drawImage(image, 0, 0, 794, 1123)
-        ctx.fillText('123', 380, 430)
+        ctx.fillText('365', 380, 430)
         ctx.font = '40px Sans'
         var newname = names[i]
         console.log(newname+' '+i)
         ctx.fillText(newname,180,550)
         ctx.font = '20px Sans'
-        ctx.fillText('Cyber Security', 80, 660)
+        ctx.fillText(eventName, 80, 660)
         var d= new Date();
         ctx.fillText(d.toISOString().slice(0,10), 80, 730)
         //to write canvas to image
@@ -78,13 +78,13 @@ function delay(i,image) {
         const out = fs.createWriteStream(__dirname + `/test${i}.png`)
         const stream = canvas.createPNGStream()
         stream.pipe(out)
-        out.on('finish', () =>  console.log('The file was created.'))
+        out.on('finish', () =>  console.log('The file was created'+`/test${i}.png`))
         resolve();}catch(e){console.log(e)}
       }, 2000)
     });
 }
 
-async function sendMail(i){
+async function sendMail(i,names,emails){
   return new Promise(async(resolve,reject)=>{
     setTimeout(async function() {
       try{  
@@ -112,7 +112,7 @@ async function sendMail(i){
 }
 
 
-async function removeFiles(i){
+async function removeFiles(i,names,emails){
   return new Promise(async(resolve,reject)=>{
     setTimeout(async function() {  
       try{
@@ -125,7 +125,7 @@ async function removeFiles(i){
         if (err) {
           throw err
         } else {
-          console.log("Successfully deleted the file.")
+          console.log("Successfully deleted the file"+ `/test${i}.png`)
         }
       })
       
@@ -136,7 +136,7 @@ async function removeFiles(i){
 
 
 
-async function write(){
+async function write(names,emails){
 
   return new Promise(async(resolve,reject)=>{
     setTimeout(async function() { 
@@ -161,11 +161,25 @@ async function write(){
       });
             loadImage('Slide1.jpg').then(async(image) => {
               for(var i=0;i<names.length;i++){
-                await delay(i,image)
-                await sendMail(i); 
-                await removeFiles(i)
+                await delay(i,image,names,emails)
+                await sendMail(i,names,emails); 
+                await removeFiles(i,names,emails)
                 if(i==names.length-1){
-                  busy=0
+                  // busy=0
+                  //handling the queue
+                  if(!queue.isEmpty()){
+                    console.log('clearing q');
+                    let dd = drivers_driver(queue.dequeue(),1);
+                    if (dd==1)
+                    console.log('Success. Certificates will be generated and delivered shortly');
+                    else if(dd==0)
+                    console.log('Wrong syntax')
+                    else if (dd==-1)
+                    console.log("Empty JSON")
+                  }
+                  else{
+                    busy=0
+                  }
                 }
               }  })
               
@@ -181,48 +195,133 @@ app.get('/', (req, res) => {
     res.send("Please send a Post Request instead. Thank You for Using the service.")
 })
 
+//____________________________________________________________________Q____________
+class Queue {
+  constructor() {
+      this.items = [];
+  }
+  
+  // add element to the queue
+  enqueue(element) {
+      return this.items.push(element);
+  }
+  
+  // remove element from the queue
+  dequeue() {
+      if(this.items.length > 0) {
+          return this.items.shift();
+      }
+  }
+  
+  // view the last element
+  peek() {
+      return this.items[this.items.length - 1];
+  }
+  
+  // check if the queue is empty
+  isEmpty(){
+     return this.items.length == 0;
+  }
+ 
+  // the size of the queue
+  size(){
+      return this.items.length;
+  }
+
+  // empty the queue
+  clear(){
+      this.items = [];
+  }
+}
+
+let queue = new Queue();
+//____________________________________________________________________Q____________
+
+
+function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
+}
+
+function drivers_driver(data,src){
+  try{
+      busy=1
+      let names=[]
+      let emails=[]
+      let k=0;
+      // console.log(JSON.parse(req.body.data.length))
+      if (isEmpty(JSON.parse(data)))
+      {
+        console.log('empty Json')
+        if (src == 0)
+        busy=0
+        // res.send("Empty JSON")
+        return -1
+      }
+      
+      f = JSON.parse(data)
+      //console.log(f.p1.name)
+      for (var key in f) {
+        if (f.hasOwnProperty(key)) {
+            if (key == "eventName"){
+              eventName = f[key]
+              continue;
+            }
+            console.log(key + " -> " + f[key].username);
+            names[k]=f[key].username
+            emails[k]=f[key].email
+            k++
+        }
+        
+    }
+    console.log(names.length)
+    for(var i=0;i<names.length;i++)
+    console.log(names[i]+' '+emails[i])
+
+    write(names,emails)
+    return 1;
+  }
+  catch(e){
+    if (src == 0)
+    busy=0;
+    return 0;
+  }
+}
+
 
 app.post('/get-cert', (req, res) => {
   console.log('just inside app.post')
   console.log(busy)
-  // count++;
-  // console.log(count)
   try{
         if(busy==0)
         {
-              busy=1
-              names=[]
-              emails=[]
-              var k=0;
-              //console.log(JSON.parse(req.body.data))
-              f = JSON.parse(req.body.data)
-              //console.log(f.p1.name)
-              for (var key in f) {
-                if (f.hasOwnProperty(key)) {
-                    console.log(key + " -> " + f[key].username);
-                    names[k]=f[key].username
-                    emails[k]=f[key].email
-                    k++
-                }
-                
-            }
-            console.log(names.length)
-            for(var i=0;i<names.length;i++)
-            console.log(names[i]+' '+emails[i])
-            
-            write()
-            
+            let dd = drivers_driver(req.body.data,0);
+            if (dd==1)
             res.send('Success. Certificates will be generated and delivered shortly');
-        }
-      
+            else if(dd=0)
+            res.send('Wrong syntax')
+            else if (dd=-1)
+            res.send("Empty JSON")
+
+            console.log('hello lsdfk')
+
+            
+
+            
+        }      
         else{
-          res.send('Server Busy, please try again later')
+          queue.enqueue(req.body.data)
+          console.log('New entry in q')
+          res.send('Request has been placed.')
         }
       }
       catch(e){
           console.log(e)
           busy=0
-          res.send('Wrong syntax')
+          res.send('Error ')
       }
 });
 
