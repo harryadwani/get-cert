@@ -31,7 +31,7 @@ const port = 5001
 const { createCanvas, loadImage, rsvgVersion } = require('canvas')
 
 var transporter;
-eventName = 'Cyber Security'
+eventName = 'Cloud Computing'
 var busy = 0;
 
 
