@@ -1,12 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
+const capitalize_first_letters = require('./helper_functions');
 require('dotenv').config()
 
-
-const id = '1028639473281-qko262tv42jaaogvmcis13s43hcangf4.apps.googleusercontent.com';
-const secret = '8FmUhuRJcjvFu56MCEaIyBRO';
-const rtoken = '1//04Fw6ROK7OW7MCgYIARAAGAQSNwF-L9Ir--nzn1V1SyQhxS1sdn-ssXFlJObZHoEDr4_hY-ZfJ6HkFEnhdtDk0w-T_Pg4gcWcC2M';
+const id = process.env.ID;
+const secret = process.env.SECRET;
+const rtoken = process.env.RTOKEN;
 
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
@@ -21,10 +21,8 @@ oauth2Client.setCredentials({
 });
 const accessToken = oauth2Client.getAccessToken()
 
-
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 const port = 5001
 
@@ -55,7 +53,7 @@ function delay(i, image, names, emails) {
         ctx.drawImage(image, 0, 0, 794, 1123)
         ctx.fillText('365', 380, 430)
         ctx.font = '40px Sans'
-        var newname = names[i]
+        var newname = capitalize_first_letters(names[i])
         console.log(newname + ' ' + i)
         ctx.fillText(newname, 180, 550)
         ctx.font = '20px Sans'
@@ -127,7 +125,6 @@ async function removeFiles(i, names, emails) {
 }
 
 
-
 async function write(names, emails) {
 
   return new Promise(async (resolve, reject) => {
@@ -182,14 +179,6 @@ async function write(names, emails) {
   });
 }
 
-
-app.get('/', (req, res) => {
-
-  //res.sendFile(__dirname + '/test.png');
-  res.send("Please send a Post Request instead. Thank You for Using the service.")
-})
-
-//____________________________________________________________________Q____________
 class Queue {
   constructor() {
     this.items = [];
@@ -229,8 +218,6 @@ class Queue {
 }
 
 let queue = new Queue();
-//____________________________________________________________________Q____________
-
 
 function isEmpty(obj) {
   for (var key in obj) {
@@ -246,20 +233,18 @@ function drivers_driver(data, src) {
     let names = []
     let emails = []
     let k = 0;
-    // console.log(JSON.parse(req.body.data.length))
     if (isEmpty(JSON.parse(data))) {
       console.log('empty Json')
       if (src == 0)
         busy = 0
-      // res.send("Empty JSON")
       return -1
     }
 
     f = JSON.parse(data)
-    //console.log(f.p1.name)
     for (var key in f) {
       if (f.hasOwnProperty(key)) {
         if (key == "eventName") {
+          console.log(f[key], 'has event name')
           eventName = f[key]
           continue;
         }
@@ -285,6 +270,11 @@ function drivers_driver(data, src) {
 }
 
 
+
+app.get('/', (req, res) => {
+  res.send("Please send a Post Request instead. Thank You for Using the service.")
+})
+
 app.post('/get-cert', (req, res) => {
   console.log('just inside app.post')
   console.log(busy)
@@ -297,10 +287,6 @@ app.post('/get-cert', (req, res) => {
         res.send('Wrong syntax')
       else if (dd = -1)
         res.send("Empty JSON")
-
-      console.log('hello lsdfk')
-
-
     }
     else {
       queue.enqueue(req.body.data)
@@ -314,9 +300,6 @@ app.post('/get-cert', (req, res) => {
     res.send('Error ')
   }
 });
-
-
-
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening`)
